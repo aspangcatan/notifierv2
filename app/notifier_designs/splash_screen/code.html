@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Notifier - Professional Hospital App</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#e5eeff",
+                        "surface": "#f8f9ff",
+                        "secondary-fixed": "#7df4ff",
+                        "on-primary-fixed-variant": "#00468c",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#d3e4fe",
+                        "primary-fixed": "#d6e3ff",
+                        "primary": "#00478d",
+                        "tertiary-fixed": "#dfe3e7",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#006970",
+                        "on-secondary-fixed-variant": "#004f54",
+                        "on-surface-variant": "#424752",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#5dd8e2",
+                        "inverse-primary": "#a9c7ff",
+                        "background": "#f8f9ff",
+                        "on-secondary-fixed": "#002022",
+                        "on-primary-container": "#c8daff",
+                        "inverse-surface": "#213145",
+                        "surface-variant": "#d3e4fe",
+                        "on-error": "#ffffff",
+                        "on-background": "#0b1c30",
+                        "surface-dim": "#cbdbf5",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#d6dade",
+                        "primary-fixed-dim": "#a9c7ff",
+                        "on-primary-fixed": "#001b3d",
+                        "on-secondary-container": "#006e75",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#5b6063",
+                        "surface-container-low": "#eff4ff",
+                        "secondary-container": "#7af1fc",
+                        "surface-container-high": "#dce9ff",
+                        "surface-bright": "#f8f9ff",
+                        "tertiary-fixed-dim": "#c3c7cb",
+                        "primary-container": "#005eb8",
+                        "on-surface": "#0b1c30",
+                        "outline": "#727783",
+                        "tertiary": "#43484c",
+                        "outline-variant": "#c2c6d4",
+                        "surface-tint": "#005db6",
+                        "on-tertiary-fixed-variant": "#43474b",
+                        "on-tertiary-fixed": "#171c1f",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "margin-mobile": "16px",
+                        "base": "4px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "margin-desktop": "48px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "patient-code": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-bold": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "patient-code": ["18px", { "lineHeight": "22px", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "label-bold": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .medical-pattern {
+            background-color: #005eb8;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); opacity: 0.2; }
+            14% { transform: scale(1.1); opacity: 0.4; }
+            28% { transform: scale(1); opacity: 0.2; }
+            42% { transform: scale(1.1); opacity: 0.4; }
+            70% { transform: scale(1); opacity: 0.2; }
+        }
+
+        .animate-heartbeat {
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        .loader-bar {
+            width: 200px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        .loader-progress {
+            position: absolute;
+            height: 100%;
+            background: #ffffff;
+            width: 30%;
+            left: -30%;
+            animation: loading 1.5s infinite ease-in-out;
+        }
+
+        @keyframes loading {
+            0% { left: -30%; width: 30%; }
+            50% { width: 60%; }
+            100% { left: 100%; width: 30%; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-primary-container h-screen flex flex-col overflow-hidden items-center justify-center relative font-body-md text-body-md">
+<!-- Background Medical Theme Icon -->
+<div class="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-[400px] text-white animate-heartbeat" style="font-variation-settings: 'FILL' 0, 'wght' 100;">
+            ecg_heart
+        </span>
+</div>
+<!-- Main Content Shell -->
+<div class="z-10 flex flex-col items-center">
+<!-- Logo Container -->
+<div class="mb-gutter flex flex-col items-center gap-base">
+<div class="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-lg mb-md">
+<span class="material-symbols-outlined text-primary text-[48px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">
+                    notifications_active
+                </span>
+</div>
+<!-- Predicted Component Label: TopAppBar headline mapped as Logo -->
+<h1 class="font-display-lg text-display-lg text-white tracking-tight">
+                Notifier
+            </h1>
+<p class="text-white/80 font-label-md text-label-md tracking-widest uppercase mt-xs">
+                Clinical Communication
+            </p>
+</div>
+</div>
+<!-- Loading Section -->
+<div class="absolute bottom-20 flex flex-col items-center gap-sm">
+<div class="loader-bar">
+<div class="loader-progress"></div>
+</div>
+<span class="text-white/60 font-label-md text-label-md tracking-normal">
+            Initializing secure systems...
+        </span>
+</div>
+<!-- Background Subtle Image (Medical Context) -->
+<div class="absolute inset-0 -z-10">
+<div class="w-full h-full opacity-5 grayscale mix-blend-overlay">
+<img alt="Hospital Corridor" class="w-full h-full object-cover" data-alt="A sophisticated medical environment featuring a high-end hospital corridor with soft, clinical blue lighting and polished surfaces. The aesthetic is extremely minimalist and modern, utilizing a color palette of deep navy and crisp white. The atmosphere is professional, quiet, and trustworthy, reflecting a state-of-the-art healthcare facility focused on efficiency and patient care." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAb19K5EvxYnaHh0b-HwZB6MlL-G73YvECYhDNGkeNyGvfy65wA2kW-zAejaxLNlJ11sUR4F0D-UmCXgOG5bhjnsSDfi-Kq1fE05MCkyQboKenedQRCtYCFgdHcVtUtPd-Svqb8GW5CNRXYjqbnIBPD2mJBEV-s1H1YFkeMV1Jv6K9_1aTG4ng2Rk4RfFoGvFLropbNKO4MLsNqUg8PIxi_FHnq76WQde4yK0cDUaZopndI573G86BRa7iAvW1mnmcysPljdHEbfmY"/>
+</div>
+</div>
+<!-- Micro-interaction JS -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Subtle fade-in of elements
+            const mainContent = document.querySelector('.z-10');
+            const loader = document.querySelector('.absolute.bottom-20');
+            
+            mainContent.style.opacity = '0';
+            mainContent.style.transform = 'translateY(10px)';
+            loader.style.opacity = '0';
+            
+            setTimeout(() => {
+                mainContent.style.transition = 'all 0.8s cubic-bezier(0.22, 1, 0.36, 1)';
+                mainContent.style.opacity = '1';
+                mainContent.style.transform = 'translateY(0)';
+            }, 300);
+
+            setTimeout(() => {
+                loader.style.transition = 'opacity 1s ease-in';
+                loader.style.opacity = '1';
+            }, 800);
+        });
+    </script>
+</body></html>

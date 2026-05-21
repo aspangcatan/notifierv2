@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "359294836752",
+    "project_id": "notifier-5e4e8",
+    "storage_bucket": "notifier-5e4e8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:359294836752:android:731f4d2895c2c38b1d2a95",
+        "android_client_info": {
+          "package_name": "csmc.hospital.notifier"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "359294836752-dvu8pc5af80208hnuhhqr121rm9kq49i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeX5q__lrEzFSqt7oqYfym6OjPKT-PO2I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "359294836752-dvu8pc5af80208hnuhhqr121rm9kq49i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

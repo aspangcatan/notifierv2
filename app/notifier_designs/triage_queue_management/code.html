@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Notifier - Queued Referrals</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#dce9ff",
+                    "primary-container": "#005eb8",
+                    "outline": "#727783",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#7af1fc",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed-dim": "#c3c7cb",
+                    "surface-bright": "#f8f9ff",
+                    "surface": "#f8f9ff",
+                    "on-primary-fixed-variant": "#00468c",
+                    "error": "#ba1a1a",
+                    "on-primary-container": "#c8daff",
+                    "outline-variant": "#c2c6d4",
+                    "tertiary-container": "#5b6063",
+                    "surface-dim": "#cbdbf5",
+                    "on-secondary-fixed": "#002022",
+                    "secondary-fixed-dim": "#5dd8e2",
+                    "secondary-fixed": "#7df4ff",
+                    "primary-fixed-dim": "#a9c7ff",
+                    "on-surface": "#0b1c30",
+                    "surface-container-low": "#eff4ff",
+                    "tertiary": "#43484c",
+                    "secondary": "#006970",
+                    "on-primary-fixed": "#001b3d",
+                    "surface-container-highest": "#d3e4fe",
+                    "surface-container": "#e5eeff",
+                    "surface-tint": "#005db6",
+                    "on-secondary": "#ffffff",
+                    "inverse-surface": "#213145",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-tertiary-container": "#d6dade",
+                    "error-container": "#ffdad6",
+                    "inverse-primary": "#a9c7ff",
+                    "on-background": "#0b1c30",
+                    "on-surface-variant": "#424752",
+                    "background": "#f8f9ff",
+                    "on-error": "#ffffff",
+                    "primary-fixed": "#d6e3ff",
+                    "tertiary-fixed": "#dfe3e7",
+                    "surface-variant": "#d3e4fe",
+                    "on-tertiary-fixed-variant": "#43474b",
+                    "on-secondary-container": "#006e75",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-fixed": "#171c1f",
+                    "primary": "#00478d",
+                    "on-secondary-fixed-variant": "#004f54"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "lg": "24px",
+                    "xl": "32px",
+                    "xs": "4px",
+                    "md": "16px",
+                    "sm": "8px",
+                    "margin-mobile": "16px",
+                    "base": "4px",
+                    "margin-desktop": "48px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "patient-code": ["Inter"],
+                    "headline-sm": ["Inter"],
+                    "label-bold": ["Inter"]
+            },
+            "fontSize": {
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "patient-code": ["18px", {"lineHeight": "22px", "letterSpacing": "0.02em", "fontWeight": "700"}],
+                    "headline-sm": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "label-bold": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopAppBar Shell -->
+<header class="bg-surface dark:bg-on-surface border-b border-outline-variant dark:border-outline docked full-width top-0 sticky z-40">
+<div class="flex justify-between items-center w-full px-margin-mobile h-16">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined">account_circle</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-primary dark:text-primary-fixed">Notifier</h1>
+</div>
+<div class="flex items-center">
+<button class="p-sm rounded-full hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors text-primary dark:text-primary-fixed">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+</div>
+</header>
+<main class="pb-32">
+<!-- Dashboard Header & Filters -->
+<section class="px-margin-mobile pt-lg">
+<div class="mb-lg">
+<h2 class="font-headline-md text-headline-md text-on-surface">Queue Management</h2>
+<p class="font-body-md text-on-surface-variant">Review and manage pending clinical referrals.</p>
+</div>
+<!-- Department Chips (Filterable) -->
+<div class="flex gap-sm overflow-x-auto hide-scrollbar pb-sm">
+<button class="flex items-center gap-xs px-md py-sm rounded-full bg-primary text-on-primary font-label-md transition-all whitespace-nowrap">
+                    All Departments
+                </button>
+<button class="flex items-center gap-xs px-md py-sm rounded-full bg-surface-container border border-outline-variant text-on-surface-variant font-label-md hover:bg-surface-container-high transition-all whitespace-nowrap">
+                    Cardiology
+                </button>
+<button class="flex items-center gap-xs px-md py-sm rounded-full bg-surface-container border border-outline-variant text-on-surface-variant font-label-md hover:bg-surface-container-high transition-all whitespace-nowrap">
+                    Neurology
+                </button>
+<button class="flex items-center gap-xs px-md py-sm rounded-full bg-surface-container border border-outline-variant text-on-surface-variant font-label-md hover:bg-surface-container-high transition-all whitespace-nowrap">
+                    Emergency
+                </button>
+<button class="flex items-center gap-xs px-md py-sm rounded-full bg-surface-container border border-outline-variant text-on-surface-variant font-label-md hover:bg-surface-container-high transition-all whitespace-nowrap">
+                    Orthopedics
+                </button>
+</div>
+</section>
+<!-- Referral List (Asymmetric/Bento style layout for visibility) -->
+<section class="px-margin-mobile mt-lg space-y-md">
+<!-- Referral Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm transition-transform active:scale-[0.98] duration-150">
+<div class="p-md flex flex-col gap-sm">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-bold text-label-bold text-secondary tracking-wider uppercase">St. Jude Medical Center</span>
+<p class="font-body-md text-on-surface-variant">Mar 24, 2024 • 10:45 AM</p>
+</div>
+<span class="font-patient-code text-patient-code text-primary bg-primary-fixed/20 px-sm py-xs rounded-lg">#PX-8821</span>
+</div>
+<div class="mt-xs">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Cardiology Referral</h3>
+<p class="font-body-md text-on-surface-variant line-clamp-2">Suspected mitral valve prolapse; patient experiencing persistent palpitations and mild shortness of breath during exertion.</p>
+</div>
+<div class="flex flex-wrap gap-xs mt-sm">
+<span class="px-sm py-xs bg-error-container text-on-error-container rounded font-label-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">priority_high</span> Urgent
+                        </span>
+<span class="px-sm py-xs bg-surface-container-high text-on-surface-variant rounded font-label-md">Pending Review</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="bg-surface-container-low px-md py-sm flex gap-sm border-t border-outline-variant">
+<button class="flex-1 bg-secondary text-on-secondary font-label-md py-sm rounded-lg flex items-center justify-center gap-xs hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">check_circle</span> Tag as Done
+                    </button>
+<button class="px-md bg-white border border-outline-variant text-error font-label-md py-sm rounded-lg flex items-center justify-center gap-xs hover:bg-error/5 transition-colors">
+<span class="material-symbols-outlined text-[18px]">delete</span> Remove
+                    </button>
+</div>
+</div>
+<!-- Referral Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<div class="p-md flex flex-col gap-sm">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-bold text-label-bold text-secondary tracking-wider uppercase">General Hospital North</span>
+<p class="font-body-md text-on-surface-variant">Mar 24, 2024 • 09:12 AM</p>
+</div>
+<span class="font-patient-code text-patient-code text-primary bg-primary-fixed/20 px-sm py-xs rounded-lg">#PX-4509</span>
+</div>
+<div class="mt-xs">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Neurology Assessment</h3>
+<p class="font-body-md text-on-surface-variant line-clamp-2">Routine assessment for post-concussion syndrome management. No immediate red flags reported during initial triage.</p>
+</div>
+<div class="flex flex-wrap gap-xs mt-sm">
+<span class="px-sm py-xs bg-surface-container-high text-on-surface-variant rounded font-label-md">Scheduled</span>
+</div>
+</div>
+<div class="bg-surface-container-low px-md py-sm flex gap-sm border-t border-outline-variant">
+<button class="flex-1 bg-secondary text-on-secondary font-label-md py-sm rounded-lg flex items-center justify-center gap-xs hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">check_circle</span> Tag as Done
+                    </button>
+<button class="px-md bg-white border border-outline-variant text-error font-label-md py-sm rounded-lg flex items-center justify-center gap-xs hover:bg-error/5 transition-colors">
+<span class="material-symbols-outlined text-[18px]">delete</span> Remove
+                    </button>
+</div>
+</div>
+<!-- Referral Card 3 (Status variation) -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<div class="p-md flex flex-col gap-sm">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-bold text-label-bold text-secondary tracking-wider uppercase">City Orthopedics Clinic</span>
+<p class="font-body-md text-on-surface-variant">Mar 23, 2024 • 04:30 PM</p>
+</div>
+<span class="font-patient-code text-patient-code text-primary bg-primary-fixed/20 px-sm py-xs rounded-lg">#PX-7712</span>
+</div>
+<div class="mt-xs">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Orthopedic Surgery</h3>
+<p class="font-body-md text-on-surface-variant line-clamp-2">Pre-operative clearance for total hip replacement. Patient history of hypertension and Type 2 diabetes.</p>
+</div>
+<div class="flex flex-wrap gap-xs mt-sm">
+<span class="px-sm py-xs bg-secondary-container text-on-secondary-container rounded font-label-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">flag</span> High Priority
+                        </span>
+</div>
+</div>
+<div class="bg-surface-container-low px-md py-sm flex gap-sm border-t border-outline-variant">
+<button class="flex-1 bg-secondary text-on-secondary font-label-md py-sm rounded-lg flex items-center justify-center gap-xs hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">check_circle</span> Tag as Done
+                    </button>
+<button class="px-md bg-white border border-outline-variant text-error font-label-md py-sm rounded-lg flex items-center justify-center gap-xs hover:bg-error/5 transition-colors">
+<span class="material-symbols-outlined text-[18px]">delete</span> Remove
+                    </button>
+</div>
+</div>
+<!-- Empty State Illustration Placeholder (Invisible if content exists) -->
+<div class="hidden flex-col items-center justify-center py-xl px-lg text-center gap-md" id="empty-state">
+<div class="w-24 h-24 rounded-full bg-surface-container flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-[48px]">fact_check</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm">Queue is Clear</h4>
+<p class="font-body-md text-on-surface-variant">All current referrals have been processed for this department.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-md pb-safe h-20 bg-surface-container dark:bg-inverse-surface border-t border-outline-variant dark:border-outline shadow-sm rounded-t-xl">
+<!-- Referrals Tab -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-lg py-xs hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="assignment">assignment</span>
+<span class="font-label-md text-label-md">Referrals</span>
+</a>
+<!-- Queue Tab (ACTIVE) -->
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-on-secondary-container text-on-secondary-container dark:text-secondary-container rounded-full px-lg py-xs Active: scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="group_work" style="font-variation-settings: 'FILL' 1;">group_work</span>
+<span class="font-label-md text-label-md">Queue</span>
+</a>
+</nav>
+<!-- Floating Action Button: Suppressed on this screen as per mandate -->
+<script>
+        // Micro-interactions for Tag as Done / Remove
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if (this.innerText.includes('Tag as Done') || this.innerText.includes('Remove')) {
+                    const card = this.closest('.bg-surface-container-lowest');
+                    card.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateX(20px)';
+                    
+                    setTimeout(() => {
+                        card.remove();
+                        // If no cards left, show empty state
+                        const cards = document.querySelectorAll('.bg-surface-container-lowest');
+                        if (cards.length === 0) {
+                            document.getElementById('empty-state').classList.remove('hidden');
+                            document.getElementById('empty-state').classList.add('flex');
+                        }
+                    }, 300);
+                }
+            });
+        });
+
+        // Filter chip interaction
+        const chips = document.querySelectorAll('.rounded-full.font-label-md');
+        chips.forEach(chip => {
+            chip.addEventListener('click', function() {
+                chips.forEach(c => {
+                    c.classList.remove('bg-primary', 'text-on-primary');
+                    c.classList.add('bg-surface-container', 'text-on-surface-variant', 'border', 'border-outline-variant');
+                });
+                this.classList.remove('bg-surface-container', 'text-on-surface-variant', 'border', 'border-outline-variant');
+                this.classList.add('bg-primary', 'text-on-primary');
+            });
+        });
+    </script>
+</body></html>
