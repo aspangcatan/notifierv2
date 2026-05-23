@@ -12,7 +12,8 @@ data class ReferralApiItem(
     val chief_complaint: String = "",
     val department: String = "",
     val referring_hospital: String = "",
-    val date_created: String = ""
+    val date_created: String = "",
+    val type: String = "Referral"
 ) {
     fun toDomain() = Referral(
         id = firebase_key,
@@ -27,7 +28,8 @@ data class ReferralApiItem(
         priority = Priority.ROUTINE,
         timeLabel = date_created.toHumanDiff(),
         chiefComplaint = chief_complaint,
-        diagnosis = diagnosis
+        diagnosis = diagnosis,
+        type = type.ifBlank { "Referral" }
     )
 }
 

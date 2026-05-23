@@ -24,6 +24,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import csmc.hospital.notifier.data.model.QueueItem
 import csmc.hospital.notifier.ui.theme.*
 import csmc.hospital.notifier.ui.viewmodel.ReferralViewModel
+import csmc.hospital.notifier.util.toDisplayDate
 import csmc.hospital.notifier.util.toTitleCase
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,6 +43,12 @@ fun QueueScreen(
     LaunchedEffect(Unit) {
         viewModel.loadQueue()
         viewModel.loadDepartments()
+    }
+
+    LaunchedEffect(departments) {
+        if (selectedCode == null && departments.isNotEmpty()) {
+            selectedCode = departments.first().code
+        }
     }
 
     val filteredItems = remember(queueItems, selectedCode) {
@@ -128,23 +135,6 @@ fun QueueScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp)
                 ) {
-                    item {
-                        val isSelected = selectedCode == null
-                        FilterChip(
-                            selected = isSelected,
-                            onClick = { selectedCode = null },
-                            label = { Text("ALL", style = MaterialTheme.typography.labelMedium) },
-                            shape = CircleShape,
-                            colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = Primary, selectedLabelColor = OnPrimary,
-                                containerColor = SurfaceContainer, labelColor = OnSurfaceVariant
-                            ),
-                            border = FilterChipDefaults.filterChipBorder(
-                                enabled = true, selected = isSelected,
-                                borderColor = OutlineVariant, selectedBorderColor = Color.Transparent
-                            )
-                        )
-                    }
                     items(departments) { dept ->
                         val isSelected = selectedCode == dept.code
                         FilterChip(
@@ -364,7 +354,7 @@ fun QueueItemCard(queueNumber: Int, item: QueueItem) {
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        item.created_at,
+                        item.created_at.toDisplayDate(),
                         style = MaterialTheme.typography.labelSmall,
                         color = Outline
                     )

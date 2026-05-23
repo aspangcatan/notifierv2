@@ -27,6 +27,7 @@ import csmc.hospital.notifier.data.model.ActivityLog
 import csmc.hospital.notifier.ui.theme.*
 import csmc.hospital.notifier.ui.viewmodel.ReferralViewModel
 import csmc.hospital.notifier.util.AvatarUtils
+import csmc.hospital.notifier.util.toDisplayDate
 import csmc.hospital.notifier.util.toTitleCase
 import androidx.lifecycle.viewmodel.compose.viewModel
 
@@ -129,7 +130,7 @@ fun ReferralDetailsScreen(
             isForwarding = isForwarding,
             onDismiss = { showForwardDialog = false },
             onConfirm = { selectedDept, remarks ->
-                viewModel.forwardReferral(referralId, selectedDept, remarks)
+                viewModel.forwardReferral(referral, selectedDept, remarks)
                 showForwardDialog = false
             }
         )
@@ -537,9 +538,9 @@ private fun TimelineLogItem(
                 if (!log.remarks.isNullOrBlank()) {
                     LogRow(label = "Remarks", value = log.remarks!!)
                 }
-                LogRow(label = "Date Forwarded", value = log.date_forwarded ?: "—", valueColor = Outline)
+                LogRow(label = "Date Forwarded", value = log.date_forwarded?.toDisplayDate() ?: "—", valueColor = Outline)
                 if (!log.date_tagged.isNullOrBlank()) {
-                    LogRow(label = "Date Tagged", value = log.date_tagged!!, valueColor = Outline)
+                    LogRow(label = "Date Tagged", value = log.date_tagged!!.toDisplayDate(), valueColor = Outline)
                 }
             }
         }

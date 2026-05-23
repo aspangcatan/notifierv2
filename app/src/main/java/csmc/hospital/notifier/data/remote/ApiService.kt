@@ -81,7 +81,9 @@ interface ApiService {
         @Field("gender") gender: String,
         @Field("department") department: String,
         @Field("userid") userid: Int,
-        @Field("remarks") remarks: String
+        @Field("remarks") remarks: String,
+        @Field("diagnosis") diagnosis: String,
+        @Field("chief_complaint") chiefComplaint: String
     ): ForwardReferralResponse
 
     @GET("load_logs")

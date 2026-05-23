@@ -42,17 +42,17 @@ fun NormalUserReferralsScreen(
     val error by viewModel.error.collectAsState()
     val filters = listOf("All Items (12)", "High Priority", "Routine", "Consults")
     var selectedFilter by remember { mutableStateOf("All Items (12)") }
-    var forwardingReferralId by remember { mutableStateOf<String?>(null) }
+    var selectedReferral by remember { mutableStateOf<Referral?>(null) }
 
-    forwardingReferralId?.let {
+    selectedReferral?.let { referral ->
         ForwardReferralDialog(
             departments = departments,
             isDepartmentsLoading = isDepartmentsLoading,
             isForwarding = isForwarding,
-            onDismiss = { forwardingReferralId = null },
+            onDismiss = { selectedReferral = null },
             onConfirm = { dept, remarks ->
-                viewModel.forwardReferral(it, dept, remarks)
-                forwardingReferralId = null
+                viewModel.forwardReferral(referral, dept, remarks)
+                selectedReferral = null
             }
         )
     }
@@ -87,8 +87,8 @@ fun NormalUserReferralsScreen(
         )
     }
 
-    LaunchedEffect(forwardingReferralId) {
-        if (forwardingReferralId != null) viewModel.loadDepartments()
+    LaunchedEffect(selectedReferral) {
+        if (selectedReferral != null) viewModel.loadDepartments()
     }
 
     Scaffold(
@@ -190,7 +190,7 @@ fun NormalUserReferralsScreen(
                     referral = referral,
                     onViewDetails = { onViewDetails(referral.id) },
                     onTagAsDone = { viewModel.tagAsDone(referral.id) },
-                    onForward = { forwardingReferralId = referral.id }
+                    onForward = { selectedReferral = referral }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
             }

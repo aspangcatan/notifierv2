@@ -156,8 +156,7 @@ class ReferralViewModel(
         }
     }
 
-    fun queueReferral(referralId: String, department: Department, userId: Int = UserSession.userId) {
-        val referral = _referrals.value.find { it.id == referralId } ?: return
+    fun queueReferral(referral: Referral, department: Department, userId: Int = UserSession.userId) {
         viewModelScope.launch {
             _isQueuing.value = true
             try {
@@ -168,7 +167,9 @@ class ReferralViewModel(
                     gender = referral.patientGender,
                     department = department.code,
                     userid = userId,
-                    remarks = "QUEUED FROM TRIAGE"
+                    remarks = "QUEUED FROM TRIAGE",
+                    diagnosis = referral.diagnosis,
+                    chiefComplaint = referral.chiefComplaint
                 )
                 if (response.code == 200) {
                     _queueSuccess.value = true
@@ -225,30 +226,46 @@ class ReferralViewModel(
         }
     }
 
-    fun forwardReferral(referralId: String, department: Department, remarks: String, userId: Int = UserSession.userId) {
-        val referral = _referrals.value.find { it.id == referralId } ?: return
+    fun forwardReferral(referral: Referral, department: Department, remarks: String, userId: Int = UserSession.userId) {
+        val isFirebaseReferral = _referrals.value.any { it.id == referral.id }
         viewModelScope.launch {
             _isForwarding.value = true
             try {
-                val response = RetrofitClient.apiService.insertReferral(
-                    userid = userId,
-                    firebaseKey = referralId,
-                    patient = referral.patientName,
-                    gender = referral.patientGender,
-                    age = referral.patientAge,
-                    diagnosis = referral.diagnosis,
-                    chiefComplaint = referral.chiefComplaint,
-                    department = department.code,
-                    code = department.code,
-                    referringHospital = referral.hospital,
-                    remarks = remarks,
-                    dateCreated = referral.rawDateReferred
-                )
-                if (response.code == 200 || response.message == "Referral already added") {
-                    repository.deleteReferral(referralId)
-                    _forwardSuccess.value = true
+                if (isFirebaseReferral) {
+                    val response = RetrofitClient.apiService.insertReferral(
+                        userid = userId,
+                        firebaseKey = referral.id,
+                        patient = referral.patientName,
+                        gender = referral.patientGender,
+                        age = referral.patientAge,
+                        diagnosis = referral.diagnosis,
+                        chiefComplaint = referral.chiefComplaint,
+                        department = department.code,
+                        code = department.code,
+                        referringHospital = referral.hospital,
+                        remarks = remarks,
+                        dateCreated = referral.rawDateReferred
+                    )
+                    if (response.code == 200 || response.message == "Referral already added") {
+                        repository.deleteReferral(referral.id)
+                        _forwardSuccess.value = true
+                    } else {
+                        _error.value = response.message
+                    }
                 } else {
-                    _error.value = response.message
+                    val response = RetrofitClient.apiService.forwardReferral(
+                        firebaseKey = referral.id,
+                        forwardedBy = userId,
+                        origin = referral.department,
+                        destination = department.code,
+                        code = department.code,
+                        remarks = remarks
+                    )
+                    if (response.code == 200) {
+                        _forwardSuccess.value = true
+                    } else {
+                        _error.value = response.message
+                    }
                 }
             } catch (e: Exception) {
                 _error.value = e.message
@@ -258,7 +275,7 @@ class ReferralViewModel(
         }
     }
 
-    fun loadDeptReferrals(department: String = UserSession.topic) {
+    fun loadDeptReferrals(department: String = UserSession.role) {
         viewModelScope.launch {
             _isDeptLoading.value = true
             try {
@@ -298,7 +315,7 @@ class ReferralViewModel(
         }
     }
 
-    private fun loadReferrals() {
+    fun loadReferrals() {
         viewModelScope.launch {
             repository.getReferrals()
                 .catch { e -> _error.value = e.message }

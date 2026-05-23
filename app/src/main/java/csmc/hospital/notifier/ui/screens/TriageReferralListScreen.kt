@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Inbox
 import androidx.compose.material.icons.filled.LocalHospital
 import androidx.compose.material.icons.filled.ManageAccounts
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PlaylistAdd
 import androidx.compose.material.icons.filled.PlaylistAddCheck
@@ -161,21 +162,27 @@ fun TriageReferralListScreen(
             it.patientCode.contains(searchQuery, ignoreCase = true)
         }
     }
-    var queuingReferralId by remember { mutableStateOf<String?>(null) }
+    var queuingReferral by remember { mutableStateOf<Referral?>(null) }
 
-    LaunchedEffect(queuingReferralId) {
-        if (queuingReferralId != null) viewModel.loadDepartments()
+    LaunchedEffect(queuingReferral) {
+        if (queuingReferral != null) viewModel.loadDepartments()
     }
 
-    queuingReferralId?.let { referralId ->
+    queuingReferral?.let { referral ->
+        val queueDepartments = if (!referral.type.equals("Manual", ignoreCase = true)) {
+            val allowed = setOf("IM", "SURGERY", "OB", "PEDIA")
+            departments.filter { it.code.uppercase() in allowed }
+        } else {
+            departments
+        }
         QueueDepartmentDialog(
-            departments = departments,
+            departments = queueDepartments,
             isDepartmentsLoading = isDepartmentsLoading,
             isQueuing = isQueuing,
-            onDismiss = { queuingReferralId = null },
+            onDismiss = { queuingReferral = null },
             onConfirm = { selectedDepartment ->
-                viewModel.queueReferral(referralId, selectedDepartment)
-                queuingReferralId = null
+                viewModel.queueReferral(referral, selectedDepartment)
+                queuingReferral = null
             }
         )
     }
@@ -232,6 +239,19 @@ fun TriageReferralListScreen(
                     }
                 },
                 actions = {
+                    IconButton(onClick = {
+                        if (isTriage) {
+                            when (selectedTabIndex) {
+                                0 -> viewModel.loadReferrals()
+                                1 -> viewModel.loadDeptReferrals()
+                                2 -> viewModel.loadAllDeptReferrals()
+                            }
+                        } else {
+                            viewModel.loadDeptReferrals()
+                        }
+                    }) {
+                        Icon(Icons.Default.Refresh, contentDescription = "Refresh", tint = Primary)
+                    }
                     IconButton(onClick = onNavigateToSettings) {
                         Icon(Icons.Default.ManageAccounts, contentDescription = "Settings", tint = Primary)
                     }
@@ -396,7 +416,7 @@ fun TriageReferralListScreen(
                         val showHistory = !isTriage || selectedTabIndex != 0
                         onViewDetails(referral.id, viewOnly, showHistory)
                     },
-                    onQueue = { queuingReferralId = referral.id },
+                    onQueue = { queuingReferral = referral },
                     showQueueButton = isTriage
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -468,11 +488,12 @@ fun ReferralCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Surface(
-                        color = Color(0xFF00897B),
+                        color = if (referral.type.equals("Manual", ignoreCase = true))
+                            Color(0xFFBF360C) else Color(0xFF1A3A6B),
                         shape = RoundedCornerShape(4.dp)
                     ) {
                         Text(
-                            "NEW",
+                            referral.type,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
                             style = MaterialTheme.typography.labelSmall.copy(
                                 color = Color.White,

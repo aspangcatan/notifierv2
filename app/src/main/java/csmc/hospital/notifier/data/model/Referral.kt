@@ -14,7 +14,8 @@ data class Referral(
     val timeLabel: String,
     val chiefComplaint: String,
     val diagnosis: String,
-    val status: ReferralStatus = ReferralStatus.NEW
+    val status: ReferralStatus = ReferralStatus.NEW,
+    val type: String = "Referral"
 )
 
 enum class Priority {
